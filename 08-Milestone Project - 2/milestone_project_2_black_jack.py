@@ -22,7 +22,7 @@ And most importantly:
 suits = ('Hearts', 'Diamonds', 'Spades', 'Clubs')
 ranks = ('Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace')
 values = {'Two':2, 'Three':3, 'Four':4, 'Five':5, 'Six':6, 'Seven':7, 'Eight':8,
-            'Nine':9, 'Ten':10, 'Jack':11, 'Queen':12, 'King':13, 'Ace':14}
+            'Nine':9, 'Ten':10, 'Jack':10, 'Queen':10, 'King':10, 'Ace':11}
 
 class Card:
     def __init__(self,suit,rank):
@@ -69,18 +69,16 @@ class Player:
             self.all_cards.extend(new_cards)
         else:
             self.all_cards.append(new_cards)
-#Broken        
+       
     def print_cards(self):
+        value_sum = 0
         print(f'{self.name} has the:')
         for i, card in enumerate(self.all_cards):
-            print(card)
+            print(str(card) + ' - ' + str(self.all_cards[i].value))     #Fix This Later
+            value_sum += self.all_cards[i].value
 
-        value_sum = 0
-        for i, card in enumerate(self.all_cards):
-            value_sum += self.all_cards[i]
-        print(value_sum)
+        print(f'These have a value of {value_sum}.')
         
-
     def bet(self):
         ammount = int(input('Please enter your bet: '))
         self.balance -= ammount
@@ -93,10 +91,24 @@ class Player:
         pass
 
     def hit(self):
-        pass
+        hit_loop = True
+        while hit_loop:
+            player_choice = input('Would you like to hit or stand? ')
+            if player_choice.upper() == 'HIT':
+                player_one.add_cards(game_deck.deal_one())
+            else:
+                hit_loop = False
+            player_one.print_cards()
 
     def __str__(self):
         return f'Player {self.name} has {len(self.all_cards)} cards.'
+
+class Game:
+    def __init__(self):
+        pass
+
+    def hit(self, player):
+        pass
 
 #Game Setup
 player_one = Player(input('Input Player Name: '))
@@ -127,7 +139,8 @@ while game_on:
 
 
     #Player Stand or Hit - Check for bust after each play
-
+    player_one.hit()
+    
 
     #Dealers Play
 
